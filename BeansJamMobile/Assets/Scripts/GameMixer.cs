@@ -47,8 +47,17 @@ public class GameMixer : MonoBehaviour {
         GameColors nextColors = _currentColors;
         while(nextColors==_currentColors)
             nextColors = (GameColors)Random.Range(1, 8);
-        _currentColors = nextColors;
+        setColor(nextColors);
+    }
 
+    public void ClearColor()
+    {
+        setColor(GameColors.None);
+    }
+
+    private void setColor(GameColors color)
+    {
+        _currentColors = color;
         _animator.SetTrigger("change");
     }
 
