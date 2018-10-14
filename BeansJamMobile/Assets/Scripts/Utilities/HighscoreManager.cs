@@ -13,6 +13,7 @@ namespace Assets.Scripts.Utilities
         private static string _secretKey = "C5bvZKs7Uy"; // Edit this value and make sure it's the same as the one stored on the server
         public static string _addScoreURL = "https://blueswebapp.azurewebsites.net/addscore.php?"; //be sure to add a ? to your url
         public static string _highscoreURL = "https://blueswebapp.azurewebsites.net/getscores.php?";
+        public static string _placementURL = "https://blueswebapp.azurewebsites.net/getplacement.php?";
 
         public static IEnumerator PostScore(string name, int score, int category, bool isMobile,Action onFinished, Action<string> onError)
         {
@@ -48,6 +49,21 @@ namespace Assets.Scripts.Utilities
             else
             {
                 onError("There was an error getting the high score: " + hs_get.error);
+            }
+        }
+
+        public static IEnumerator GetPlacement(string name,int category, bool isMobile, Action<string> onFinished, Action<string> onError)
+        {
+            WWW hs_get = new WWW(_placementURL + "name=" + WWW.EscapeURL(name) + "&category=" + category + "&isMobile=" + (isMobile ? 1 : 0));
+            yield return hs_get;
+
+            if (hs_get.error == null)
+            {
+                onFinished(hs_get.text);
+            }
+            else
+            {
+                onError("There was an error getting the placement: " + hs_get.error);
             }
         }
     }

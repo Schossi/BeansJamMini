@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Utilities;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -95,7 +96,15 @@ public class GameLogic : MonoBehaviour
 
                     StartCoroutine(HighscoreManager.PostScore(Settings.PlayerName, _score, (int)Settings.Mode, Application.isMobilePlatform, () =>
                     {
-                        _sendScoreText.text = "score sucessfully submitted";
+                        _sendScoreText.text = "score sucessfully submitted"+Environment.NewLine+"loading placement...";
+
+                        StartCoroutine(HighscoreManager.GetPlacement(Settings.PlayerName, (int)Settings.Mode, Application.isMobilePlatform, s =>
+                           {
+                               _sendScoreText.text = "score sucessfully submitted" + Environment.NewLine + s;
+                           }, s =>
+                         {
+                               _sendScoreText.text = "score sucessfully submitted" + Environment.NewLine + s;
+                           }));
                     }, s =>
                     {
                         _sendScoreText.text = s;
